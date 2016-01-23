@@ -89,11 +89,7 @@ RUN circleci-install docker_compose
 ARG TARGET_UNPRIVILEGED_LXC
 RUN if [ "$TARGET_UNPRIVILEGED_LXC" = "true" ]; then circleci-install circleci_docker; fi
 
-# Undivert upstart
-# You shouldn't change the line unless you understad the consequence
-RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl
-
-LABEL circleci.user="ubuntu"
+####### ALL CUSTOMIZATIONS BELOW THIS LINE! ##########
 
 # Set timezone
 RUN sudo echo 'America/Chicago' > /etc/timezone && rm /etc/localtime && ln -s /usr/share/zoneinfo/America/Chicago /etc/localtime
@@ -104,4 +100,15 @@ RUN sudo sed -i 's/^save /# &/' /etc/redis/redis.conf
 # Install libraries required by ruby native gems
 RUN sudo apt-get install libgmp-dev libcurl4-openssl-dev
 
+# Install RabbitMQ.
+RUN sudo apt-get install rabbitmq-server
+RUN sudo /etc/init.d/rabbitmq-server start
+
+####### ALL CUSTOMIZATIONS ABOVE THIS LINE! #########
+
+# Undivert upstart
+# You shouldn't change the line unless you understad the consequence
+RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl
+
+LABEL circleci.user="ubuntu"
 
