@@ -101,3 +101,7 @@ RUN sudo echo 'America/Chicago' > /etc/timezone && rm /etc/localtime && ln -s /u
 # Disable redis save behavior
 RUN sudo sed -i 's/^save /# &/' /etc/redis/redis.conf
 
+# Install libraries required by ruby native gems
+RUN sudo apt-get install libgmp-dev libcurl4-openssl-dev
+
+
