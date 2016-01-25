@@ -73,8 +73,8 @@ RUN circleci-install clojure
 # RUN circleci-install scala
 
 # Qt
-ADD circleci-provision-scripts/qt.sh /opt/circleci-provision-scripts/qt.sh
-RUN circleci-install qt
+ADD circleci-provision-scripts/qt55.sh /opt/circleci-provision-scripts/qt55.sh
+RUN circleci-install qt55
 
 # awscli
 ADD circleci-provision-scripts/awscli.sh /opt/circleci-provision-scripts/awscli.sh
@@ -92,17 +92,19 @@ RUN if [ "$TARGET_UNPRIVILEGED_LXC" = "true" ]; then circleci-install circleci_d
 ####### ALL CUSTOMIZATIONS BELOW THIS LINE! ##########
 
 # Set timezone
-RUN sudo echo 'America/Chicago' > /etc/timezone && rm /etc/localtime && ln -s /usr/share/zoneinfo/America/Chicago /etc/localtime
+RUN echo 'America/Chicago' > /etc/timezone && rm /etc/localtime && ln -s /usr/share/zoneinfo/America/Chicago /etc/localtime
 
 # Disable redis save behavior
-RUN sudo sed -i 's/^save /# &/' /etc/redis/redis.conf
+RUN sed -i 's/^save /# &/' /etc/redis/redis.conf
 
 # Install libraries required by ruby native gems
-RUN sudo apt-get install libgmp-dev libcurl4-openssl-dev
+RUN apt-get install libgmp-dev libcurl4-openssl-dev
+# Libraries required for building capybara-webkit
+RUN apt-get install mesa-common-dev libglu1-mesa-dev
 
 # Install RabbitMQ.
-RUN sudo apt-get install rabbitmq-server
-RUN sudo /etc/init.d/rabbitmq-server start
+ADD circleci-provision-scripts/rabbitmq.sh /opt/circleci-provision-scripts/rabbitmq.sh
+RUN circleci-install rabbitmq
 
 ####### ALL CUSTOMIZATIONS ABOVE THIS LINE! #########
 
