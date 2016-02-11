@@ -37,8 +37,8 @@ RUN circleci-install firefox
 ADD circleci-provision-scripts/chrome.sh /opt/circleci-provision-scripts/chrome.sh
 RUN circleci-install chrome
 
-# ADD circleci-provision-scripts/phantomjs.sh /opt/circleci-provision-scripts/phantomjs.sh
-# RUN circleci-install phantomjs
+ADD circleci-provision-scripts/phantomjs.sh /opt/circleci-provision-scripts/phantomjs.sh
+RUN circleci-install phantomjs
 
 # Android
 # ADD circleci-provision-scripts/android-sdk.sh /opt/circleci-provision-scripts/android-sdk.sh
@@ -105,6 +105,10 @@ RUN apt-get install mesa-common-dev libglu1-mesa-dev
 # Install RabbitMQ.
 ADD circleci-provision-scripts/rabbitmq.sh /opt/circleci-provision-scripts/rabbitmq.sh
 RUN circleci-install rabbitmq
+
+# Install PostgreSQL server development headers
+# TODO: Move to postgres install script
+RUN apt-get install postgresql-server-dev-9.4
 
 ####### ALL CUSTOMIZATIONS ABOVE THIS LINE! #########
 
