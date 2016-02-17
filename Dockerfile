@@ -61,6 +61,7 @@ RUN circleci-install java
 
 ADD circleci-provision-scripts/ruby.sh /opt/circleci-provision-scripts/ruby.sh
 RUN circleci-install ruby 2.2.2
+RUN circleci-install ruby 2.2.3
 
 # ADD circleci-provision-scripts/php.sh /opt/circleci-provision-scripts/php.sh
 # RUN circleci-install php 5.6.16
@@ -105,10 +106,6 @@ RUN apt-get install mesa-common-dev libglu1-mesa-dev
 # Install RabbitMQ.
 ADD circleci-provision-scripts/rabbitmq.sh /opt/circleci-provision-scripts/rabbitmq.sh
 RUN circleci-install rabbitmq
-
-# Install PostgreSQL server development headers
-# TODO: Move to postgres install script
-RUN apt-get install postgresql-server-dev-9.4
 
 ####### ALL CUSTOMIZATIONS ABOVE THIS LINE! #########
 
