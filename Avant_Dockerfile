@@ -164,10 +164,13 @@ RUN echo 'America/Chicago' > /etc/timezone && rm /etc/localtime && ln -s /usr/sh
 # Disable redis save behavior
 RUN sed -i 's/^save /# &/' /etc/redis/redis.conf
 
+RUN apt-get update
 # Install libraries required by ruby native gems
 RUN apt-get install libgmp-dev libcurl4-openssl-dev
 # Libraries required for building capybara-webkit
 RUN apt-get install mesa-common-dev libglu1-mesa-dev
+# Clean up useless apt-get cache
+RUN rm -rf /var/lib/apt/lists/*
 
 ####### ALL CUSTOMIZATIONS ABOVE THIS LINE! #########
 
